@@ -328,7 +328,7 @@ __END__
 
 =head1 NAME
 
-Parse::CPAN::Meta - Parse META.yml
+Parse::CPAN::Meta - Parse META.yml and other similar CPAN metadata files
 
 =head1 SYNOPSIS
 

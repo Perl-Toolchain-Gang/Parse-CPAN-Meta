@@ -1,0 +1,4 @@
+Revision history for Perl extension Parse::CPAN::Meta
+
+0.01 Tue  8 Jan 2008
+	- Cloned from YAML::Tiny 1.21
