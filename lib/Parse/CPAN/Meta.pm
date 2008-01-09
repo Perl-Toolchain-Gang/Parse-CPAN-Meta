@@ -66,31 +66,32 @@ sub Load ($) {
 	            split /(?:\015{1,2}\012|\015|\012)/, shift;
 
 	# A nibbling parser
+	my @documents = ();
 	while ( @lines ) {
 		# Do we have a document header?
 		if ( $lines[0] =~ /^---\s*(?:(.+)\s*)?$/ ) {
 			# Handle scalar documents
 			shift @lines;
 			if ( defined $1 and $1 !~ /^(?:\#.+|\%YAML:[\d\.]+)$/ ) {
-				push @rv, _scalar( "$1", [ undef ], \@lines );
+				push @documents, _scalar( "$1", [ undef ], \@lines );
 				next;
 			}
 		}
 
 		if ( ! @lines or $lines[0] =~ /^---\s*(?:(.+)\s*)?$/ ) {
 			# A naked document
-			push @rv, undef;
+			push @documents, undef;
 
 		} elsif ( $lines[0] =~ /^\s*\-/ ) {
 			# An array at the root
 			my $document = [ ];
-			push @rv, $document;
+			push @documents, $document;
 			_array( $document, [ 0 ], \@lines );
 
 		} elsif ( $lines[0] =~ /^(\s*)\w/ ) {
 			# A hash at the root
 			my $document = { };
-			push @rv, $document;
+			push @documents, $document;
 			_hash( $document, [ length($1) ], \@lines );
 
 		} else {
@@ -98,7 +99,7 @@ sub Load ($) {
 		}
 	}
 
-	return @rv;
+	return @documents;
 }
 
 # Deparse a scalar string to the actual scalar
