@@ -10,7 +10,7 @@ BEGIN {
 
 use File::Spec::Functions ':ALL';
 use t::lib::Test;
-use Test::More tests(0, 1, 4);
+use Test::More tests(0, 1, 3);
 
 
 
@@ -25,13 +25,12 @@ my $sample      = load_ok( 'multibyte.yml', $sample_file, 450 );
 # Does the string parse to the structure
 my $name      = "multibyte";
 my $yaml_copy = $sample;
-my $yaml      = eval { YAML::Tiny->read_string( $yaml_copy ); };
-is( $@, '', "$name: YAML::Tiny parses without error" );
-is( $yaml_copy, $sample, "$name: YAML::Tiny does not modify the input string" );
+my @yaml      = eval { Parse::CPAN::Meta::Load( $yaml_copy ); };
+is( $@, '', "$name: Parse::CPAN::Meta::Load parses without error" );
+is( $yaml_copy, $sample, "$name: Parse::CPAN::Meta::Load does not modify the input string" );
 SKIP: {
-	skip( "Shortcutting after failure", 2 ) if $@;
-	isa_ok( $yaml, 'YAML::Tiny' );
-	is_deeply( $yaml->[0]->{build_requires}, {
+	skip( "Shortcutting after failure", 1 ) if $@;
+	is_deeply( $yaml[0]->{build_requires}, {
 		'Config'     => 0,
 		'Test::More' => 0,
 		'XSLoader'   => 0,

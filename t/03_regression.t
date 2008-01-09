@@ -10,7 +10,7 @@ BEGIN {
 
 use File::Spec::Functions ':ALL';
 use t::lib::Test;
-use Test::More tests(19, 0, 6);
+use Test::More tests(19);
 
 
 
@@ -216,7 +216,7 @@ yaml_ok(
 slash: '\\'
 name: 'O''Reilly'
 END_YAML
-	[ { slash => "\\", name => "O'Reilly" } ],
+	[ { slash => "\\\\", name => "O'Reilly" } ],
 	'single quote subtleties',
 );
 
