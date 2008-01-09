@@ -2,3 +2,8 @@ Revision history for Perl extension Parse::CPAN::Meta
 
 0.01 Tue  8 Jan 2008
 	- Cloned from YAML::Tiny 1.21
+	- Removed all write functionality
+	- Reduced interface to Load and LoadFile
+	- Removed object-orientation
+	- Removed global $errstr, all errors are exceptions
+	- Applied prototypes to all functions
