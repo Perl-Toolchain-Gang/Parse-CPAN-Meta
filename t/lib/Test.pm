@@ -33,11 +33,11 @@ sub yaml_ok {
 	# Does the string parse to the structure
 	my $yaml_copy = $string;
 	my @yaml      = eval { Parse::CPAN::Meta::Load( $yaml_copy ); };
-	Test::More::is( $@, '', "$name: YAML::Tiny parses without error" );
-	Test::More::is( $yaml_copy, $string, "$name: YAML::Tiny does not modify the input string" );
+	Test::More::is( $@, '', "$name: Parse::CPAN::Meta parses without error" );
+	Test::More::is( $yaml_copy, $string, "$name: Parse::CPAN::Meta does not modify the input string" );
 	SKIP: {
 		Test::More::skip( "Shortcutting after failure", 1 ) if $@;
-		Test::More::is_deeply( \@yaml, $array, "$name: YAML::Tiny parses correctly" );
+		Test::More::is_deeply( \@yaml, $array, "$name: Parse::CPAN::Meta parses correctly" );
 	}
 
 	# Return true as a convenience

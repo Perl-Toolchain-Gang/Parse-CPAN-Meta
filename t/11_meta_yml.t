@@ -17,7 +17,7 @@ use Test::More tests(8, 2);
 
 
 #####################################################################
-# Testing YAML::Tiny's own META.yml file
+# Testing YAML::Tiny's META.yml file
 
 yaml_ok(
 	<<'END_YAML',
