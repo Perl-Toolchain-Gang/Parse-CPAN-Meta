@@ -1,4 +1,4 @@
-Revision history for Perl extension Parse::CPAN::Meta
+Revision history for Perl extension Parse-CPAN-Meta
 
 0.03 Thu 20 Mar 2008
 	- Adding YAML.pm compatibility in scalar context
