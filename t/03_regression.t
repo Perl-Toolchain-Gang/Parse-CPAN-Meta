@@ -20,7 +20,7 @@ BEGIN {
 
 use File::Spec::Functions ':ALL';
 use Parse::CPAN::Meta::Test;
-use Test::More tests(22);
+use Test::More tests(20);
 
 
 

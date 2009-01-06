@@ -5,7 +5,7 @@ use Carp 'croak';
 BEGIN {
 	require 5.004;
 	require Exporter;
-	$Parse::CPAN::Meta::VERSION   = '0.03';
+	$Parse::CPAN::Meta::VERSION   = '0.04';
 	@Parse::CPAN::Meta::ISA       = qw{ Exporter      };
 	@Parse::CPAN::Meta::EXPORT_OK = qw{ Load LoadFile };
 }
