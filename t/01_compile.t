@@ -3,13 +3,13 @@
 # Load testing for YAML::Tiny
 
 BEGIN {
-    if( $ENV{PERL_CORE} ) {
-        chdir 't';
-        @INC = ('../lib', 'lib');
-    }
-    else {
-        unshift @INC, 't/lib/';
-    }
+	if( $ENV{PERL_CORE} ) {
+		chdir 't';
+		@INC = ('../lib', 'lib');
+	}
+	else {
+		unshift @INC, 't/lib/';
+	}
 }
 
 use strict;

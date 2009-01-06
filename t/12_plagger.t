@@ -3,13 +3,13 @@
 # Testing Plagger config samples from Miyagawa-san's YAPC::NA 2006 talk
 
 BEGIN {
-    if( $ENV{PERL_CORE} ) {
-        chdir 't';
-        @INC = ('../lib', 'lib');
-    }
-    else {
-        unshift @INC, 't/lib/';
-    }
+	if( $ENV{PERL_CORE} ) {
+		chdir 't';
+		@INC = ('../lib', 'lib');
+	}
+	else {
+		unshift @INC, 't/lib/';
+	}
 }
 
 use strict;
