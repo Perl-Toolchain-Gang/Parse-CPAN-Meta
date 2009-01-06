@@ -10,12 +10,10 @@ my $tlib = 't/lib/Parse/CPAN/Meta';
 # local => blead
 my %files = (
   "$lib/Meta.pm" => "$lib/Meta.pm",
+
+  "$tlib/Test.pm" => "$tlib/Test.pm",
   "Changes" => "$lib/Meta/Changes",
 
-  (
-    map {my $f = "$tlib/Meta/$_.pm"; ($f, $f)}
-    qw(Test)
-  ),
   (
     map {my $f = "t/$_.t"; ($f, "$lib/Meta/$f")}
     qw( 01_compile 02_basic 03_regression 04_scalar
