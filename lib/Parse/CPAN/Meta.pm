@@ -227,6 +227,16 @@ sub _array ($$$) {
 				croak("Parse::CPAN::Meta does not support the line '$lines->[0]'");
 			}
 
+		} elsif ( defined $indent->[-2] and $indent->[-1] == $indent->[-2] ) {
+			# This is probably a structure like the following...
+			# ---
+			# foo:
+			# - list
+			# bar: value
+			#
+			# ... so lets return and let the hash parser handle it
+			return 1;
+
 		} else {
 			croak("Parse::CPAN::Meta does not support the line '$lines->[0]'");
 		}
@@ -377,7 +387,7 @@ L<YAML::Tiny>, L<YAML>, L<YAML::Syck>
 
 =head1 COPYRIGHT
 
-Copyright 2006 - 2008 Adam Kennedy.
+Copyright 2006 - 2009 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
