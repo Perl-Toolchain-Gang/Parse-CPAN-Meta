@@ -29,7 +29,7 @@ use Test::More tests(0, 1, 3);
 #####################################################################
 # Testing that Perl::Smith config files work
 
-my $sample_file = catfile( 't', 'data', 'multibyte.yml' );
+my $sample_file = catfile( test_data_directory(), 'multibyte.yml' );
 my $sample      = load_ok( 'multibyte.yml', $sample_file, 450 );
 
 # Does the string parse to the structure
