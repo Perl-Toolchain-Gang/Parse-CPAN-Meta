@@ -3,12 +3,21 @@ package Parse::CPAN::Meta::Test;
 use strict;
 use Test::More ();
 use Parse::CPAN::Meta;
+use File::Spec;
 
 use vars qw{@ISA @EXPORT};
 BEGIN {
 	require Exporter;
 	@ISA    = qw{ Exporter };
-	@EXPORT = qw{ tests  yaml_ok  slurp  load_ok };
+	@EXPORT = qw{ tests  yaml_ok  slurp  load_ok  test_data_directory };
+}
+
+sub test_data_directory {
+	return(
+		$ENV{PERL_CORE}
+		? File::Spec->catdir(qw(lib Parse CPAN Meta t data))
+		: File::Spec->catdir(qw(t data))
+	);
 }
 
 # 22 tests per call to yaml_ok
