@@ -290,3 +290,22 @@ END_YAML
 	[ { foo => "foo\\\n\tbar" } ],
 	'special characters',
 );
+
+
+
+
+
+
+######################################################################
+# Non-Indenting Sub-List
+
+yaml_ok(
+	<<'END_YAML',
+---
+foo:
+- list
+bar: value
+END_YAML
+	[ { foo => [ 'list' ], bar => 'value' } ],
+	'Non-indenting sub-list',
+);
