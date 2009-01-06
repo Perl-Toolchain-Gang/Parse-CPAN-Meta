@@ -2,6 +2,16 @@
 
 # Testing of META.yml containing AVAR's name
 
+BEGIN {
+    if( $ENV{PERL_CORE} ) {
+        chdir 't';
+        @INC = ('../lib', 'lib');
+    }
+    else {
+        unshift @INC, 't/lib/';
+    }
+}
+
 use strict;
 BEGIN {
 	$|  = 1;
@@ -9,7 +19,7 @@ BEGIN {
 }
 
 use File::Spec::Functions ':ALL';
-use t::lib::Test;
+use Parse::CPAN::Meta::Test;
 use Test::More tests(0, 1, 3);
 
 

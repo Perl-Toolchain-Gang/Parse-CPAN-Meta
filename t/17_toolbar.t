@@ -2,6 +2,16 @@
 
 # Testing of a known-bad file from an editor
 
+BEGIN {
+    if( $ENV{PERL_CORE} ) {
+        chdir 't';
+        @INC = ('../lib', 'lib');
+    }
+    else {
+        unshift @INC, 't/lib/';
+    }
+}
+
 use strict;
 BEGIN {
 	$|  = 1;
@@ -9,7 +19,7 @@ BEGIN {
 }
 
 use File::Spec::Functions ':ALL';
-use t::lib::Test;
+use Parse::CPAN::Meta::Test;
 # use Test::More skip_all => 'Temporarily ignoring failing test';
 use Test::More tests(1, 1);
 

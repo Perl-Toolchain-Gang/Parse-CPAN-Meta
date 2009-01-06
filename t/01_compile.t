@@ -2,6 +2,16 @@
 
 # Load testing for YAML::Tiny
 
+BEGIN {
+    if( $ENV{PERL_CORE} ) {
+        chdir 't';
+        @INC = ('../lib', 'lib');
+    }
+    else {
+        unshift @INC, 't/lib/';
+    }
+}
+
 use strict;
 BEGIN {
 	$|  = 1;
@@ -16,4 +26,4 @@ ok( $] >= 5.004, "Your perl is new enough" );
 
 # Does the module load
 use_ok( 'Parse::CPAN::Meta' );
-use_ok( 't::lib::Test' );
+use_ok( 'Parse::CPAN::Meta::Test' );
