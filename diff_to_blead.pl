@@ -24,7 +24,7 @@ my %files = (
     map {my $f = "t/data/$_"; ($f, "$lib/Meta/$f")}
     qw( HTML-WebDAO.yml multibyte.yml sample.yml
         Template-Provider-Unicode-Japanese.yml
-        toolbar.yml vanilla.yml )
+        utf_16_le_bom.yml toolbar.yml vanilla.yml)
   ),
 );
 
