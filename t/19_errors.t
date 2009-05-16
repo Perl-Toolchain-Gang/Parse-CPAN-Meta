@@ -30,7 +30,7 @@ use Test::More tests => 1;
 # Missing Features
 
 # We don't support raw nodes
-yaml_error( <<'END_YAML', 'Unsupported YAML feature' );
+yaml_error( <<'END_YAML', 'does not support a feature' );
 ---
 version: !!perl/hash:version 
   original: v2.0.2
