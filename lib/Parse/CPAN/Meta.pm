@@ -53,9 +53,13 @@ sub LoadFile ($) {
 	# Slurp in the file
 	local $/ = undef;
 	local *CFG;
-	open( CFG, $file ) or croak("Failed to open file '$file': $!");
+	unless ( open( CFG, $file ) ) {
+		croak("Failed to open file '$file': $!");
+	}
 	my $yaml = <CFG>;
-	close CFG          or croak("Failed to close file '$file': $!");
+	unless ( close(CFG) ) {
+		croak("Failed to close file '$file': $!");
+	}
 
 	# Hand off to the actual parser
 	Load( $yaml );
@@ -126,7 +130,7 @@ sub Load ($) {
 			_hash( $document, [ length($1) ], \@lines );
 
 		} else {
-			croak("Parse::CPAN::Meta does not support the line '$lines[0]'");
+			croak("Parse::CPAN::Meta failed to classify line '$lines[0]'");
 		}
 	}
 
@@ -164,7 +168,9 @@ sub _scalar ($$$) {
 	}
 
 	# Special cases
-	croak("Unsupported YAML feature") if $string =~ /^[\'\"!&]/;
+	if ( $string =~ /^[\'\"!&]/ ) {
+		croak("Parse::CPAN::Meta does not support a feature in line '$lines->[0]'");
+	}
 	return {} if $string eq '{}';
 	return [] if $string eq '[]';
 
@@ -172,13 +178,13 @@ sub _scalar ($$$) {
 	return $string unless $string =~ /^[>|]/;
 
 	# Error
-	croak("Multi-line scalar content missing") unless @$lines;
+	croak("Parse::CPAN::Meta failed to find multi-line scalar content") unless @$lines;
 
 	# Check the indent depth
 	$lines->[0]   =~ /^(\s*)/;
 	$indent->[-1] = length("$1");
 	if ( defined $indent->[-2] and $indent->[-1] <= $indent->[-2] ) {
-		croak("Illegal line indenting");
+		croak("Parse::CPAN::Meta found bad indenting in line '$lines->[0]'");
 	}
 
 	# Pull the lines
@@ -212,7 +218,7 @@ sub _array ($$$) {
 		if ( length($1) < $indent->[-1] ) {
 			return 1;
 		} elsif ( length($1) > $indent->[-1] ) {
-			croak("Hash line over-indented");
+			croak("Parse::CPAN::Meta found bad indenting in line '$lines->[0]'");
 		}
 
 		if ( $lines->[0] =~ /^(\s*\-\s+)[^\'\"]\S*\s*:(?:\s+|$)/ ) {
@@ -249,7 +255,7 @@ sub _array ($$$) {
 				_hash( $array->[-1], [ @$indent, length("$1") ], $lines );
 
 			} else {
-				croak("Parse::CPAN::Meta does not support the line '$lines->[0]'");
+				croak("Parse::CPAN::Meta failed to classify line '$lines->[0]'");
 			}
 
 		} elsif ( defined $indent->[-2] and $indent->[-1] == $indent->[-2] ) {
@@ -263,7 +269,7 @@ sub _array ($$$) {
 			return 1;
 
 		} else {
-			croak("Parse::CPAN::Meta does not support the line '$lines->[0]'");
+			croak("Parse::CPAN::Meta failed to classify line '$lines->[0]'");
 		}
 	}
 
@@ -288,13 +294,15 @@ sub _hash ($$$) {
 		if ( length($1) < $indent->[-1] ) {
 			return 1;
 		} elsif ( length($1) > $indent->[-1] ) {
-			croak("Hash line over-indented");
+			croak("Parse::CPAN::Meta found bad indenting in line '$lines->[0]'");
 		}
 
 		# Get the key
 		unless ( $lines->[0] =~ s/^\s*([^\'\" ][^\n]*?)\s*:(\s+|$)// ) {
-			croak("Unsupported YAML feature") if $lines->[0] =~ /^\s*[?\'\"]/;
-			croak("Bad or unsupported hash line");
+			if ( $lines->[0] =~ /^\s*[?\'\"]/ ) {
+				croak("Parse::CPAN::Meta does not support a feature in line '$lines->[0]'");
+			}
+			croak("Parse::CPAN::Meta failed to classify line '$lines->[0]'");
 		}
 		my $key = $1;
 
@@ -368,34 +376,36 @@ Parse::CPAN::Meta - Parse META.yml and other similar CPAN metadata files
 
 =head1 DESCRIPTION
 
-B<Parse::CPAN::Meta> is a parser for META.yml files, based on the
+B<Parse::CPAN::Meta> is a parser for F<META.yml> files, based on the
 parser half of L<YAML::Tiny>.
 
 It supports a basic subset of the full YAML specification, enough to
-implement parsing of typical META.yml files, and other similarly simple
+implement parsing of typical F<META.yml> files, and other similarly simple
 YAML files.
 
 If you need something with more power, move up to a full YAML parser such
 as L<YAML>, L<YAML::Syck> or L<YAML::LibYAML>.
 
-Parse::CPAN::Meta provides a very simply API of only two functions, based
-on the YAML functions of the same name. Wherever possible, identical
-calling semantics are used.
+B<Parse::CPAN::Meta> provides a very simply API of only two functions,
+based on the YAML functions of the same name. Wherever possible,
+identical calling semantics are used.
 
-All error reporting is done with exceptions (dieing).
+All error reporting is done with exceptions (die'ing).
 
 =head1 FUNCTIONS
 
 For maintenance clarity, no functions are exported.
 
-=head2 Load( $string )
+=head2 Load
 
-  my @documents = Load( $string );
+  my @yaml = Load( $string );
 
 Parses a string containing a valid YAML stream into a list of Perl data
 structures.
 
-=head2 LoadFile( $file_name )
+=head2 LoadFile
+
+  my @yaml = LoadFile( 'META.yml' );
 
 Reads the YAML stream from a file instead of a string.
 
