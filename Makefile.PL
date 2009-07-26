@@ -23,6 +23,16 @@ WriteMakefile(
 );
 
 package MY;
+
+# ExtUtil::MakeMaker's default PMLIBDIRS finds uupacktool.pl but
+# that's only a utility so I'd like it to be skipped over.
+sub libscan {
+	my $self = shift @_;
+	my ( $pl_or_pm ) = @_;
+	return 0 if $pl_or_pm eq 'uupacktool.pl';
+	return $self->SUPER::libscan( @_ );
+}
+
 sub test {
 	my $inherited = shift->SUPER::test(@_);
 	$inherited =~ s{^test\s*:+\s*(.*)}{
