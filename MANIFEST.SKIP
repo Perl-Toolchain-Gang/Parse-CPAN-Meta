@@ -1,5 +1,7 @@
 ^diff_to_blead\.pl$
 
+t/data/utf_16_le_bom.yml$
+
 # Default section:
 # Avoid version control files.
 \bRCS\b
