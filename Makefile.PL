@@ -33,6 +33,16 @@ sub libscan {
 	return $self->SUPER::libscan( @_ );
 }
 
+# Just like core perl's _test_prep function in Makefile, we unpack
+# binary files before testing. This function also converts the
+# double-colon test dependency list to a single colon list. This
+# turned out to be be necessary because unpacking the binary files
+# must happen before any other test tasks will run and potentially
+# require them.
+#
+# TODO: consider whether the test rule should be gutted so it only
+# handles test preparation, then delegates to another rule which is
+# double-colon like this rule normally is.
 sub test {
 	my $inherited = shift->SUPER::test(@_);
 	$inherited =~ s{^test\s*:+\s*(.*)}{
@@ -40,6 +50,8 @@ sub test {
 	}me || die $inherited;
 	return $inherited;
 }
+
+# Adding cleanup_unpacked_files to the clean rule.
 sub clean {
 	my $inherited = shift->SUPER::clean(@_);
 	$inherited =~ s{^(clean\s*:.*)}{
@@ -47,6 +59,8 @@ sub clean {
 	}me || die $inherited;
 	return $inherited;
 }
+
+# Define the unpack_files and cleanup_unpacked_files Makefile rules.
 sub postamble {
 	return <<'MAKE_FRAG';
 unpack_files:
