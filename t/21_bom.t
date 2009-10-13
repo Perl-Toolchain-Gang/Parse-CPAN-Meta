@@ -20,8 +20,11 @@ use File::Spec::Functions ':ALL';
 use Parse::CPAN::Meta::Test;
 use Test::More tests(0, 1, 3);
 
-
-
+#####################################################################
+# Unpack binary file(s) for testing and schedule cleanup
+my $uupacktool = catfile(qw/t bin uupacktool.pl/);
+system($^X, $uupacktool, '-u', '-m');
+END { system($^X, $uupacktool, '-c') }
 
 
 #####################################################################
