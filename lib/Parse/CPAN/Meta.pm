@@ -45,8 +45,8 @@ sub load_file {
   my ($class, $filename) = @_;
 
   if ($filename =~ /\.ya?ml$/) {
-    my $distmeta = LoadFile($filename);
-    return $distmeta->[0];
+    my ($distmeta) = LoadFile($filename);
+    return $distmeta;
   }
 
   if ($filename =~ /\.json$/) {
@@ -60,7 +60,8 @@ sub load_file {
 
 sub load_yaml_string {
   my ($class, $string) = @_;
-  Load($string)->[0];
+  my @docs = Load($string);
+  return $docs[0];
 }
 
 sub load_json_string {
