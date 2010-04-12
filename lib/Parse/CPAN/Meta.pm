@@ -41,6 +41,35 @@ my %UNESCAPES = (
 #####################################################################
 # Implementation
 
+sub load_file {
+  my ($class, $filename) = @_;
+
+  if ($filename =~ /\.ya?ml$/) {
+    my $distmeta = LoadFile($filename);
+    return $distmeta->[0];
+  }
+
+  if ($filename =~ /\.json$/) {
+    open my $fh, '<', $filename or die "can't open $filename for reading: $!";
+    my $json = do { local $/; <$fh> };
+    return $class->load_json_string($json);
+  }
+
+  croak("file type cannot be determined by filename");
+}
+
+sub load_yaml_string {
+  my ($class, $string) = @_;
+  Load($string)->[0];
+}
+
+sub load_json_string {
+  my ($class, $string) = @_;
+  require JSON;
+  JSON->VERSION(2);
+  JSON->new->utf8->decode($string);
+}
+
 # Create an object from a file
 sub LoadFile ($) {
 	# Check the file
@@ -352,13 +381,10 @@ Parse::CPAN::Meta - Parse META.yml and other similar CPAN metadata files
     # In your file
     
     ---
-    rootproperty: blah
-    section:
-      one: two
-      three: four
-      Foo: Bar
-      empty: ~
-    
+    name: My-Distribution
+    version: 1.23
+    resources:
+      homepage: "http://example.com/dist/My-Distribution"
     
     
     #############################################
@@ -366,18 +392,17 @@ Parse::CPAN::Meta - Parse META.yml and other similar CPAN metadata files
     
     use Parse::CPAN::Meta;
     
-    # Create a YAML file
-    my @yaml = Parse::CPAN::Meta::LoadFile( 'Meta.yml' );
+    my $distmeta = Parse::CPAN::Meta->load_file('META.yml');
     
     # Reading properties
-    my $root = $yaml[0]->{rootproperty};
-    my $one  = $yaml[0]->{section}->{one};
-    my $Foo  = $yaml[0]->{section}->{Foo};
+    my $name     = $distmeta->{name};
+    my $version  = $distmeta->{version};
+    my $homepage = $distmeta->{resources}{homepage};
 
 =head1 DESCRIPTION
 
-B<Parse::CPAN::Meta> is a parser for F<META.yml> files, based on the
-parser half of L<YAML::Tiny>.
+B<Parse::CPAN::Meta> is a parser for F<META.json> and F<META.yml> files, using
+L<JSON.pm|JSON> and the parser half of L<YAML::Tiny>.
 
 It supports a basic subset of the full YAML specification, enough to
 implement parsing of typical F<META.yml> files, and other similarly simple
@@ -386,15 +411,44 @@ YAML files.
 If you need something with more power, move up to a full YAML parser such
 as L<YAML>, L<YAML::Syck> or L<YAML::LibYAML>.
 
-B<Parse::CPAN::Meta> provides a very simply API of only two functions,
+B<Parse::CPAN::Meta> provides three methods: C<load_file>, C<load_json_string>,
+and C<load_yaml_string>.  These will read and deserialize CPAN metafiles, and
+are described below in detail.
+
+B<Parse::CPAN::Meta> provides a legacy API of only two functions,
 based on the YAML functions of the same name. Wherever possible,
 identical calling semantics are used.
 
 All error reporting is done with exceptions (die'ing).
 
+=head1 METHODS
+
+=head2 load_file
+
+  my $metadata_structure = Parse::CPAN::Meta->load_file('META.json');
+
+  my $metadata_structure = Parse::CPAN::Meta->load_file('META.yml');
+
+This method will read the named file and deserialize it to a data structure,
+determining whether it should be JSON or YAML based on the filename.
+
+=head2 load_yaml_string
+
+  my $metadata_structure = Parse::CPAN::Meta->load_yaml_string( $yaml_string);
+
+This method deserializes the given string of YAML and returns the first
+document in it.  (CPAN metadata files should always have only one document.)
+
+=head2 load_json_string
+
+  my $metadata_structure = Parse::CPAN::Meta->load_json_string( $json_string);
+
+This method deserializes the given string of JSON and the result.
+
 =head1 FUNCTIONS
 
-For maintenance clarity, no functions are exported.
+For maintenance clarity, no functions are exported.  This routines are
+YAML-specific and probably best avoided in favor of C<load_file>.
 
 =head2 Load
 
