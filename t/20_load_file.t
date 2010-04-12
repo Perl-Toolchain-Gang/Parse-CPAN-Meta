@@ -60,8 +60,16 @@ my $want = {
 
 my $meta_yaml = catfile( test_data_directory(), 'VR-META.yml' );
 my $from_yaml = Parse::CPAN::Meta->load_file( $meta_yaml );
-is_deeply($from_yaml, $want, "load from YAML results in expected data");
+is_deeply($from_yaml, $want, "load from YAML file results in expected data");
 
 my $meta_json = catfile( test_data_directory(), 'VR-META.json' );
 my $from_json = Parse::CPAN::Meta->load_file( $meta_json );
-is_deeply($from_json, $want, "load from JSON results in expected data");
+is_deeply($from_json, $want, "load from JSON file results in expected data");
+
+my $yaml   = load_ok( 'VR-META.yml', $meta_yaml, 100);
+$from_yaml = Parse::CPAN::Meta->load_yaml_string( $yaml );
+is_deeply($from_yaml, $want, "load from YAML str results in expected data");
+
+my $json   = load_ok( 'VR-META.json', $meta_json, 100);
+$from_json = Parse::CPAN::Meta->load_json_string( $json );
+is_deeply($from_json, $want, "load from JSON str results in expected data");
