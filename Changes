@@ -1,6 +1,7 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
-  - add support for JSON metafiles and load_* methods (RJBS)
+1.41_01 Fri Dec 10 2010
+	- add support for JSON metafiles and load_* methods (RJBS)
 	- Move binary file unpacking to test file from Makefile.PL so tests
 	  will pass in the Perl core using a generated Makefile.PL
 	- Move bundled uupacktool.pl to t/bin/
