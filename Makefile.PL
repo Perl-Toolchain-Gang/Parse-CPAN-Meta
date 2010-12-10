@@ -13,6 +13,7 @@ WriteMakefile(
 		'JSON'       => 2,
 		'File::Spec' => '0.80',
 		'Test::More' => '0.47',
+		'YAML::Tiny' => '1.44',
 	},
 	($] >= 5.005 ? (
 		AUTHOR  => 'Adam Kennedy <adamk@cpan.org>',
