@@ -36,19 +36,28 @@ sub load_file {
   croak("file type cannot be determined by filename");
 }
 
+my $yaml_version; # cache the check
 sub load_yaml_string {
   my ($class, $string) = @_;
   require YAML::Tiny;
-  YAML::Tiny->VERSION(1.44);
+  $yaml_version ||= YAML::Tiny->VERSION(1.44);
   my $yaml = YAML::Tiny->read_string($string);
   return $yaml->[-1] || {};
 }
 
+my $json_version; # cache the check
 sub load_json_string {
   my ($class, $string) = @_;
-  require JSON;
-  JSON->VERSION(2);
-  JSON->new->utf8->decode($string);
+  my $json_class;
+  if ( defined $INC{'JSON.pm'} ) {
+    $json_class = 'JSON';
+  }
+  else {
+    require JSON::PP;
+    $json_class = 'JSON::PP';
+  }
+  $json_version ||= $json_class->VERSION(2);
+  return $json_class->new->utf8->decode($string);
 }
 
 sub _slurp {
@@ -143,7 +152,9 @@ document in it.  (CPAN metadata files should always have only one document.)
 
   my $metadata_structure = Parse::CPAN::Meta->load_json_string( $json_string);
 
-This method deserializes the given string of JSON and the result.
+This method deserializes the given string of JSON and the result. If the
+L<JSON> module is loaded, it will be used, otherwise, L<JSON::PP> will be
+loaded and used instead.
 
 =head1 FUNCTIONS
 

@@ -10,7 +10,7 @@ WriteMakefile(
 	ABSTRACT  => 'Parse META.yml and other similar CPAN metadata files',
 	VERSION   => $main::VERSION,
 	PREREQ_PM => {
-		'JSON'       => 2,
+		'JSON::PP'   => 2,
 		'File::Spec' => '0.80',
 		'Test::More' => '0.47',
 		'YAML::Tiny' => '1.44',

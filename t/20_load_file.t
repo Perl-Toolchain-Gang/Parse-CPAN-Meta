@@ -19,6 +19,7 @@ BEGIN {
 }
 
 use File::Spec::Functions ':ALL';
+use Parse::CPAN::Meta;
 use Parse::CPAN::Meta::Test;
 # use Test::More skip_all => 'Temporarily ignoring failing test';
 use Test::More 'no_plan';
