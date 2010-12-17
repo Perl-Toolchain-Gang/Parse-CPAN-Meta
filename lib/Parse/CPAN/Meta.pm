@@ -39,9 +39,9 @@ sub load_file {
 my $yaml_version; # cache the check
 sub load_yaml_string {
   my ($class, $string) = @_;
-  require YAML::Tiny;
-  $yaml_version ||= YAML::Tiny->VERSION(1.44);
-  my $yaml = YAML::Tiny->read_string($string);
+  require CPAN::Meta::YAML;
+  $yaml_version ||= CPAN::Meta::YAML->VERSION(0.002);
+  my $yaml = CPAN::Meta::YAML->read_string($string);
   return $yaml->[-1] || {};
 }
 
@@ -69,14 +69,14 @@ sub _slurp {
 # Kept for backwards compatibility only
 # Create an object from a file
 sub LoadFile ($) {
-  require YAML::Tiny;
-  return YAML::Tiny::LoadFile(shift);
+  require CPAN::Meta::YAML;
+  return CPAN::Meta::YAML::LoadFile(shift);
 }
 
 # Parse a document from a string.
 sub Load ($) {
-  require YAML::Tiny;
-  return YAML::Tiny::Load(shift);
+  require CPAN::Meta::YAML;
+  return CPAN::Meta::YAML::Load(shift);
 }
 
 1;
@@ -116,7 +116,7 @@ Parse::CPAN::Meta - Parse META.yml and other similar CPAN metadata files
 =head1 DESCRIPTION
 
 B<Parse::CPAN::Meta> is a parser for F<META.json> and F<META.yml> files, using
-L<JSON.pm|JSON> and/or L<YAML::Tiny>.
+L<JSON.pm|JSON> and/or L<CPAN::Meta::YAML>.
 
 B<Parse::CPAN::Meta> provides three methods: C<load_file>, C<load_json_string>,
 and C<load_yaml_string>.  These will read and deserialize CPAN metafiles, and
@@ -184,11 +184,6 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Parse-CPAN-Meta>
 =head1 AUTHOR
 
 Adam Kennedy E<lt>adamk@cpan.orgE<gt>
-
-=head1 SEE ALSO
-
-L<YAML>, L<YAML::Syck>, L<Config::Tiny>, L<CSS::Tiny>,
-L<http://use.perl.org/~Alias/journal/29427>, L<http://ali.as/>
 
 =head1 COPYRIGHT
 
