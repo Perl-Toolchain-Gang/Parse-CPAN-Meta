@@ -17,7 +17,7 @@ BEGIN {
 	# Class structure
 	require 5.004;
 	require Exporter;
-	$Parse::CPAN::Meta::VERSION   = '1.41_01';
+	$Parse::CPAN::Meta::VERSION   = '1.41_02';
 	@Parse::CPAN::Meta::ISA       = qw{ Exporter      };
 	@Parse::CPAN::Meta::EXPORT_OK = qw{ Load LoadFile };
 }
