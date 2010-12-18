@@ -16,6 +16,7 @@ t/data/utf_16_le_bom.yml$
 \bpm_to_blib$
 \bblibdirs$
 ^MANIFEST\.SKIP$
+^Parse-CPAN-Meta
 
 # Avoid Module::Build generated and utility files.
 \bBuild$
@@ -30,4 +31,5 @@ t/data/utf_16_le_bom.yml$
 \b\.#
 \b\..*\.sw[op]$
 errors.err$
+\.error.err$
 
