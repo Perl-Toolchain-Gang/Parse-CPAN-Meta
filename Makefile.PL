@@ -1,14 +1,9 @@
 use strict;
-BEGIN {
-	require 5.003_96;
-	$main::VERSION = '1.41_02';
-}
+require 5.003_96;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
 	NAME      => 'Parse::CPAN::Meta',
-	ABSTRACT  => 'Parse META.yml and other similar CPAN metadata files',
-	VERSION   => $main::VERSION,
 	PREREQ_PM => {
 		'JSON::PP'   => 2,
 		'File::Spec' => '0.80',
@@ -17,6 +12,8 @@ WriteMakefile(
 	},
 	($] >= 5.005 ? (
 		AUTHOR  => 'Adam Kennedy <adamk@cpan.org>',
+                ABSTRACT_FROM => 'lib/Parse/CPAN/Meta.pm',
+                VERSION_FROM  => 'lib/Parse/CPAN/Meta.pm',
 	) : ()),
 	($ExtUtils::MakeMaker::VERSION ge '6.30_00' ? (
 		LICENSE => 'perl',
