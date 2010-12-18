@@ -1,6 +1,11 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
-        - Convert to using CPAN::Meta::YAML instead of YAML::Tiny
+1.41_03 Fri Dec 17 2010
+	- Throw exception when CPAN::Meta::YAML has a parse error
+	  (RT#47608)
+
+1.41_02 Fri Dec 17 2010
+	- Convert to using CPAN::Meta::YAML instead of YAML::Tiny
 
 1.41_01 Fri Dec 10 2010
 	- add support for JSON metafiles and load_* methods (RJBS)

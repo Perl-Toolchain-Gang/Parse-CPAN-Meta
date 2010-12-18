@@ -41,7 +41,8 @@ sub load_yaml_string {
   my ($class, $string) = @_;
   require CPAN::Meta::YAML;
   $yaml_version ||= CPAN::Meta::YAML->VERSION(0.002);
-  my $yaml = CPAN::Meta::YAML->read_string($string);
+  my $yaml = CPAN::Meta::YAML->read_string($string)
+    or die CPAN::Meta::YAML->errstr;
   return $yaml->[-1] || {};
 }
 
@@ -70,13 +71,15 @@ sub _slurp {
 # Create an object from a file
 sub LoadFile ($) {
   require CPAN::Meta::YAML;
-  return CPAN::Meta::YAML::LoadFile(shift);
+  return CPAN::Meta::YAML::LoadFile(shift)
+    or die CPAN::Meta::YAML->errstr;
 }
 
 # Parse a document from a string.
 sub Load ($) {
   require CPAN::Meta::YAML;
-  return CPAN::Meta::YAML::Load(shift);
+  return CPAN::Meta::YAML::Load(shift)
+    or die CPAN::Meta::YAML->errstr;
 }
 
 1;
