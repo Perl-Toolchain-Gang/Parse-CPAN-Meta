@@ -18,6 +18,6 @@ WriteMakefile(
 	($ExtUtils::MakeMaker::VERSION ge '6.30_00' ? (
 		LICENSE => 'perl',
 	) : ()),
-	(INSTALLDIRS => $] >= 5.010001 ? 'perl' : 'site'),
+	(INSTALLDIRS => ($] ge '5.010001' && $] lt '5.012') ? 'perl' : 'site'),
 );
 
