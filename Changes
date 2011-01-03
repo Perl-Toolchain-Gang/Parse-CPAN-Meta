@@ -1,5 +1,7 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
+1.41_04
+
         - Support PERL_JSON_BACKEND environment (defaulting to JSON::PP)
         - Update Makefile.PL to install to sitelib on Perl 5.12+
 
