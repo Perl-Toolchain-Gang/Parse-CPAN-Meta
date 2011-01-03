@@ -24,10 +24,6 @@ use Parse::CPAN::Meta::Test;
 # use Test::More skip_all => 'Temporarily ignoring failing test';
 use Test::More 'no_plan';
 
-
-
-
-
 #####################################################################
 # Testing that Perl::Smith config files work
 
@@ -59,18 +55,78 @@ my $want = {
   "version" => "0.101010",
 };
 
-my $meta_yaml = catfile( test_data_directory(), 'VR-META.yml' );
-my $from_yaml = Parse::CPAN::Meta->load_file( $meta_yaml );
-is_deeply($from_yaml, $want, "load from YAML file results in expected data");
-
 my $meta_json = catfile( test_data_directory(), 'VR-META.json' );
-my $from_json = Parse::CPAN::Meta->load_file( $meta_json );
-is_deeply($from_json, $want, "load from JSON file results in expected data");
+my $meta_yaml = catfile( test_data_directory(), 'VR-META.yml' );
 
-my $yaml   = load_ok( 'VR-META.yml', $meta_yaml, 100);
-$from_yaml = Parse::CPAN::Meta->load_yaml_string( $yaml );
-is_deeply($from_yaml, $want, "load from YAML str results in expected data");
+### YAML tests
+{
+  local $ENV{PERL_YAML_BACKEND}; # ensure we get CPAN::META::YAML
 
-my $json   = load_ok( 'VR-META.json', $meta_json, 100);
-$from_json = Parse::CPAN::Meta->load_json_string( $json );
-is_deeply($from_json, $want, "load from JSON str results in expected data");
+  my $from_yaml = Parse::CPAN::Meta->load_file( $meta_yaml );
+  is_deeply($from_yaml, $want, "load from YAML file results in expected data");
+}
+
+{
+  local $ENV{PERL_YAML_BACKEND}; # ensure we get CPAN::META::YAML
+
+  my $yaml   = load_ok( 'VR-META.yml', $meta_yaml, 100);
+  my $from_yaml = Parse::CPAN::Meta->load_yaml_string( $yaml );
+  is_deeply($from_yaml, $want, "load from YAML str results in expected data");
+}
+
+SKIP: {
+  skip "YAML module not installed", 2
+    unless eval "require YAML; 1";
+  local $ENV{PERL_YAML_BACKEND} = 'YAML';
+
+  my $yaml   = load_ok( 'VR-META.yml', $meta_yaml, 100);
+  my $from_yaml = Parse::CPAN::Meta->load_yaml_string( $yaml );
+  is_deeply($from_yaml, $want, "load_yaml_string using PERL_YAML_BACKEND");
+}
+
+### JSON tests
+{
+  # JSON tests with JSON::PP
+  local $ENV{PERL_JSON_BACKEND}; # ensure we get JSON::PP
+
+  my $from_json = Parse::CPAN::Meta->load_file( $meta_json );
+  is_deeply($from_json, $want, "load from JSON file results in expected data");
+}
+
+{
+  # JSON tests with JSON::PP
+  local $ENV{PERL_JSON_BACKEND}; # ensure we get JSON::PP
+
+  my $json   = load_ok( 'VR-META.json', $meta_json, 100);
+  my $from_json = Parse::CPAN::Meta->load_json_string( $json );
+  is_deeply($from_json, $want, "load from JSON str results in expected data");
+}
+
+{
+  # JSON tests with JSON::PP, take 2
+  local $ENV{PERL_JSON_BACKEND} = 0; # request JSON::PP
+
+  my $json   = load_ok( 'VR-META.json', $meta_json, 100);
+  my $from_json = Parse::CPAN::Meta->load_json_string( $json );
+  is_deeply($from_json, $want, "load_json_string with PERL_JSON_BACKEND = 0");
+}
+
+{
+  # JSON tests with JSON::PP, take 3
+  local $ENV{PERL_JSON_BACKEND} = 'JSON::PP'; # request JSON::PP
+
+  my $json   = load_ok( 'VR-META.json', $meta_json, 100);
+  my $from_json = Parse::CPAN::Meta->load_json_string( $json );
+  is_deeply($from_json, $want, "load_json_string with PERL_JSON_BACKEND = 'JSON::PP'");
+}
+
+SKIP: {
+  skip "JSON module version 2.5 not installed", 2
+    unless eval "require JSON; JSON->VERSION(2.5); 1";
+  local $ENV{PERL_JSON_BACKEND} = 1;
+
+  my $json   = load_ok( 'VR-META.json', $meta_json, 100);
+  my $from_json = Parse::CPAN::Meta->load_json_string( $json );
+  is_deeply($from_json, $want, "load_json_string with PERL_JSON_BACKEND = 1");
+}
+
