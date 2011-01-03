@@ -2,6 +2,7 @@ package Parse::CPAN::Meta;
 
 use strict;
 use Carp 'croak';
+use Module::Load::Conditional qw/can_load/;
 
 # UTF Support?
 sub HAVE_UTF8 () { $] >= 5.007003 }
@@ -46,19 +47,28 @@ sub load_yaml_string {
   return $yaml->[-1] || {};
 }
 
-my $json_version; # cache the check
 sub load_json_string {
   my ($class, $string) = @_;
-  my $json_class;
-  if ( defined $INC{'JSON.pm'} ) {
-    $json_class = 'JSON';
+  my $json_class = _choose_json_backend();
+  return $json_class->new->utf8->decode($string);
+}
+
+sub _choose_json_backend {
+  local $Module::Load::Conditional::CHECK_INC_HASH = 1;
+  
+  # default to JSON::PP
+  my $backend = exists $ENV{PERL_JSON_BACKEND} ? $ENV{PERL_JSON_BACKEND} : '0';
+
+  if ($backend eq '0' or $backend eq 'JSON::PP') {
+    can_load( modules => {'JSON::PP' => 2.27103}, verbose => 0 )
+      or die "JSON::PP 2.27103 is not available\n";
+    return 'JSON::PP';
   }
   else {
-    require JSON::PP;
-    $json_class = 'JSON::PP';
+    can_load( modules => {'JSON' => 2.5}, verbose => 0 )
+      or die "JSON 2.5 is required for PERL_JSON_BACKEND";
+    return "JSON";
   }
-  $json_version ||= $json_class->VERSION(2);
-  return $json_class->new->utf8->decode($string);
 }
 
 sub _slurp {
@@ -119,7 +129,7 @@ Parse::CPAN::Meta - Parse META.yml and other similar CPAN metadata files
 =head1 DESCRIPTION
 
 B<Parse::CPAN::Meta> is a parser for F<META.json> and F<META.yml> files, using
-L<JSON.pm|JSON> and/or L<CPAN::Meta::YAML>.
+L<JSON::PP> and/or L<CPAN::Meta::YAML>.
 
 B<Parse::CPAN::Meta> provides three methods: C<load_file>, C<load_json_string>,
 and C<load_yaml_string>.  These will read and deserialize CPAN metafiles, and
@@ -155,9 +165,11 @@ document in it.  (CPAN metadata files should always have only one document.)
 
   my $metadata_structure = Parse::CPAN::Meta->load_json_string( $json_string);
 
-This method deserializes the given string of JSON and the result. If the
-L<JSON> module is loaded, it will be used, otherwise, L<JSON::PP> will be
-loaded and used instead.
+This method deserializes the given string of JSON and the result. By default,
+L<JSON::PP> will be used. If the C<PERL_JSON_BACKEND> environment variable
+exists and is set to anything other than "0" or "JSON::PP", then the L<JSON>
+module (version 2.5 or greater) will be loaded and used; if L<JSON> is not
+installed or is too old, an exception will be thrown.
 
 =head1 FUNCTIONS
 

@@ -9,6 +9,7 @@ WriteMakefile(
 		'File::Spec' => '0.80',
 		'Test::More' => '0.47',
 		'CPAN::Meta::YAML' => '0.002',
+		'Module::Load::Conditional' => '0.26',
 	},
 	($] >= 5.005 ? (
 		AUTHOR  => 'Adam Kennedy <adamk@cpan.org>',
