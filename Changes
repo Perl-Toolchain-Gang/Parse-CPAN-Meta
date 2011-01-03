@@ -1,6 +1,6 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
-1.41_04
+1.41_04 Mon Jan 3 2011
       - Support PERL_JSON_BACKEND environment (defaulting to JSON::PP)
       - Support PERL_YAML_BACKEND environment (defaulting to CPAN::Meta:YAML)
       - Update Makefile.PL to install to sitelib on Perl 5.12+
