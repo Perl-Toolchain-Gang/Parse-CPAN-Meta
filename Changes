@@ -1,5 +1,7 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
+      - Removed Module::Load::Conditional dependency
+
 1.4400 Fri Feb 04 2011
       - Added 'json_backend' and 'yaml_backend' methods to provide
         the names of modules used for deserialization
