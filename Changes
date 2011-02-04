@@ -1,5 +1,9 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
+1.4400 Fri Feb 04 2011
+      - Added 'json_backend' and 'yaml_backend' methods to provide
+        the names of modules used for deserialization
+
 1.4200 Mon Jan 24 2011
       - No changes from 1.41_04
 

@@ -18,7 +18,7 @@ BEGIN {
 	# Class structure
 	require 5.004;
 	require Exporter;
-	$Parse::CPAN::Meta::VERSION   = '1.4200';
+	$Parse::CPAN::Meta::VERSION   = '1.4400';
 	@Parse::CPAN::Meta::ISA       = qw{ Exporter      };
 	@Parse::CPAN::Meta::EXPORT_OK = qw{ Load LoadFile };
 }
@@ -39,7 +39,7 @@ sub load_file {
 
 sub load_yaml_string {
   my ($class, $string) = @_;
-  my $backend = _choose_yaml_backend();
+  my $backend = $class->yaml_backend();
   my $data = eval { no strict 'refs'; &{"$backend\::Load"}($string) };
   if ( $@ ) { 
     croak $backend->can('errstr') ? $backend->errstr : $@
@@ -49,10 +49,10 @@ sub load_yaml_string {
 
 sub load_json_string {
   my ($class, $string) = @_;
-  return _choose_json_backend()->new->decode($string);
+  return $class->json_backend()->new->decode($string);
 }
 
-sub _choose_yaml_backend {
+sub yaml_backend {
   local $Module::Load::Conditional::CHECK_INC_HASH = 1;
   if (! defined $ENV{PERL_YAML_BACKEND} ) {
     can_load( modules => {'CPAN::Meta::YAML' => 0.002}, verbose => 0 )
@@ -69,7 +69,7 @@ sub _choose_yaml_backend {
   }
 }
 
-sub _choose_json_backend {
+sub json_backend {
   local $Module::Load::Conditional::CHECK_INC_HASH = 1;
   if (! $ENV{PERL_JSON_BACKEND} or $ENV{PERL_JSON_BACKEND} eq 'JSON::PP') {
     can_load( modules => {'JSON::PP' => 2.27103}, verbose => 0 )
@@ -185,6 +185,22 @@ C<load_yaml_string>.
 This method deserializes the given string of JSON and the result.  
 If the source was UTF-8 encoded, the string must be decoded before calling
 C<load_json_string>.
+
+=head2 yaml_backend
+
+  my $backend = Parse::CPAN::Meta->yaml_backend;
+
+Returns the module name of the YAML serializer. See L</ENVIRONMENT>
+for details.
+
+=head2 json_backend
+
+  my $backend = Parse::CPAN::Meta->json_backend;
+
+Returns the module name of the JSON serializer.  This will either
+be L<JSON::PP> or L<JSON>.  Even if C<PERL_JSON_BACKEND> is set,
+this will return L<JSON> as further delegation is handled by
+the L<JSON> module.  See L</ENVIRONMENT> for details.
 
 =head1 FUNCTIONS
 

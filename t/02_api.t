@@ -62,6 +62,7 @@ my $meta_yaml = catfile( test_data_directory(), 'VR-META.yml' );
 {
   local $ENV{PERL_YAML_BACKEND}; # ensure we get CPAN::META::YAML
 
+  is(Parse::CPAN::Meta->yaml_backend(), 'CPAN::Meta::YAML', 'yaml_backend()');
   my $from_yaml = Parse::CPAN::Meta->load_file( $meta_yaml );
   is_deeply($from_yaml, $want, "load from YAML file results in expected data");
 }
@@ -79,6 +80,7 @@ SKIP: {
     unless eval "require YAML; 1";
   local $ENV{PERL_YAML_BACKEND} = 'YAML';
 
+  is(Parse::CPAN::Meta->yaml_backend(), 'YAML', 'yaml_backend()');
   my $yaml   = load_ok( 'VR-META.yml', $meta_yaml, 100);
   my $from_yaml = Parse::CPAN::Meta->load_yaml_string( $yaml );
   is_deeply($from_yaml, $want, "load_yaml_string using PERL_YAML_BACKEND");
@@ -89,6 +91,7 @@ SKIP: {
   # JSON tests with JSON::PP
   local $ENV{PERL_JSON_BACKEND}; # ensure we get JSON::PP
 
+  is(Parse::CPAN::Meta->json_backend(), 'JSON::PP', 'json_backend()');
   my $from_json = Parse::CPAN::Meta->load_file( $meta_json );
   is_deeply($from_json, $want, "load from JSON file results in expected data");
 }
@@ -125,6 +128,7 @@ SKIP: {
     unless eval "require JSON; JSON->VERSION(2.5); 1";
   local $ENV{PERL_JSON_BACKEND} = 1;
 
+  is(Parse::CPAN::Meta->json_backend(), 'JSON', 'json_backend()');
   my $json   = load_ok( 'VR-META.json', $meta_json, 100);
   my $from_json = Parse::CPAN::Meta->load_json_string( $json );
   is_deeply($from_json, $want, "load_json_string with PERL_JSON_BACKEND = 1");
