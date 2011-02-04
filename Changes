@@ -1,5 +1,6 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
+1.4401 Fri Feb 04 2011
       - Removed Module::Load::Conditional dependency
 
 1.4400 Fri Feb 04 2011
