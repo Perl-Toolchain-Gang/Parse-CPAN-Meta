@@ -7,8 +7,8 @@ WriteMakefile(
 	PREREQ_PM => {
 		'File::Spec' => '0.80',
 		'Test::More' => '0.47',
-		'JSON::PP'   => 2.27103,
-		'CPAN::Meta::YAML' => '0.002',
+		'JSON::PP'   => '2.27200',
+		'CPAN::Meta::YAML' => '0.008',
 	},
 	($] >= 5.005 ? (
 		AUTHOR  => 'Adam Kennedy <adamk@cpan.org>',
