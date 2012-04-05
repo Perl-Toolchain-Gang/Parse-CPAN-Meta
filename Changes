@@ -1,5 +1,6 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
+1.4404 Sun Apr 05 2012
       - Protected tests from user PERL_YAML/JSON_BACKEND
 
 1.4403 Sun Apr 01 2012
