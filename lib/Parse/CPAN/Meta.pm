@@ -108,15 +108,17 @@ sub _can_load {
 # Create an object from a file
 sub LoadFile ($) {
   require CPAN::Meta::YAML;
-  return CPAN::Meta::YAML::LoadFile(shift)
+  my $object = CPAN::Meta::YAML::LoadFile(shift)
     or die CPAN::Meta::YAML->errstr;
+  return $object;
 }
 
 # Parse a document from a string.
 sub Load ($) {
   require CPAN::Meta::YAML;
-  return CPAN::Meta::YAML::Load(shift)
+  my $object = CPAN::Meta::YAML::Load(shift)
     or die CPAN::Meta::YAML->errstr;
+  return $object;
 }
 
 1;
