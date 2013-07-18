@@ -1,4 +1,6 @@
 package Parse::CPAN::Meta;
+# ABSTRACT: Parse META.yml and META.json CPAN metadata files
+# VERSION
 
 use strict;
 use Carp 'croak';
@@ -17,7 +19,6 @@ BEGIN {
 	# Class structure
 	require 5.004;
 	require Exporter;
-	$Parse::CPAN::Meta::VERSION   = '1.4404';
 	@Parse::CPAN::Meta::ISA       = qw{ Exporter      };
 	@Parse::CPAN::Meta::EXPORT_OK = qw{ Load LoadFile };
 }
@@ -126,10 +127,6 @@ sub Load ($) {
 __END__
 
 =pod
-
-=head1 NAME
-
-Parse::CPAN::Meta - Parse META.yml and META.json CPAN metadata files
 
 =head1 SYNOPSIS
 
@@ -254,25 +251,5 @@ the C<PERL_YAML_BACKEND> environment variable is defined, then it is intepreted
 as a module to use for deserialization.  The given module must be installed,
 must load correctly and must implement the C<Load()> function or an exception
 will be thrown.
-
-=head1 SUPPORT
-
-Bugs should be reported via the CPAN bug tracker at
-
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Parse-CPAN-Meta>
-
-=head1 AUTHOR
-
-Adam Kennedy E<lt>adamk@cpan.orgE<gt>
-
-=head1 COPYRIGHT
-
-Copyright 2006 - 2010 Adam Kennedy.
-
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-The full text of the license can be found in the
-LICENSE file included with this module.
 
 =cut
