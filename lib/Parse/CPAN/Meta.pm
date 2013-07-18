@@ -128,6 +128,8 @@ __END__
 
 =pod
 
+=for Pod::Coverage HAVE_UTF8 IO_LAYER
+
 =head1 SYNOPSIS
 
     #############################################
