@@ -45,7 +45,6 @@
             "Exporter" : "0",
             "File::Spec" : "0.80",
             "JSON::PP" : "2.27200",
-            "Test::More" : "0.47",
             "perl" : "5.006",
             "strict" : "0"
          }
@@ -58,7 +57,7 @@
             "File::Spec::Functions" : "0",
             "File::Temp" : "0",
             "List::Util" : "0",
-            "Test::More" : "0",
+            "Test::More" : "0.47",
             "vars" : "0",
             "warnings" : "0"
          }
@@ -67,7 +66,7 @@
    "provides" : {
       "Parse::CPAN::Meta" : {
          "file" : "lib/Parse/CPAN/Meta.pm",
-         "version" : "1.4405"
+         "version" : "1.4406"
       }
    },
    "release_status" : "stable",
@@ -83,7 +82,7 @@
          "web" : "http://github.com/Perl-Toolchain-Gang/Parse-CPAN-Meta"
       }
    },
-   "version" : "1.4405",
+   "version" : "1.4406",
    "x_contributors" : [
       "David Golden <dagolden@cpan.org>",
       "Joshua ben Jore <jjore@cpan.org>",

@@ -8,7 +8,7 @@ Parse::CPAN::Meta - Parse META.yml and META.json CPAN metadata files
 
 =head1 VERSION
 
-version 1.4405
+version 1.4406
 
 =head1 SYNOPSIS
 
