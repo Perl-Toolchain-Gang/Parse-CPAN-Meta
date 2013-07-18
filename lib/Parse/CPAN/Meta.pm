@@ -249,7 +249,7 @@ old, an exception will be thrown.
 =head2 PERL_YAML_BACKEND
 
 By default, L<CPAN::Meta::YAML> will be used for deserializing YAML data. If
-the C<PERL_YAML_BACKEND> environment variable is defined, then it is intepreted
+the C<PERL_YAML_BACKEND> environment variable is defined, then it is interpreted
 as a module to use for deserialization.  The given module must be installed,
 must load correctly and must implement the C<Load()> function or an exception
 will be thrown.
