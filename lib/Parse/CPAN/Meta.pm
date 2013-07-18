@@ -1,8 +1,8 @@
+use strict;
 package Parse::CPAN::Meta;
 # ABSTRACT: Parse META.yml and META.json CPAN metadata files
 # VERSION
 
-use strict;
 use Carp 'croak';
 
 # UTF Support?
