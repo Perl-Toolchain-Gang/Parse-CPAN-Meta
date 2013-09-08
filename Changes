@@ -1,6 +1,7 @@
 Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
+      - Fixed improperly encoded META.yml
 
 1.4405    2013-07-17 21:43:34 America/New_York
       - Fixed incorrect "return ... or die ..." constructs
