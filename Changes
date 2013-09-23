@@ -2,6 +2,11 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [FIXED]
+
+    - Installation on Perls < 5.12 will uninstall older versions installed
+      due to being bundled with ExtUtils::MakeMaker
+
 1.4407    2013-09-08 10:16:29 America/New_York
       - Fixed incorrect resource metadata
 
