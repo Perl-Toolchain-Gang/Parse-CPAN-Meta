@@ -2,6 +2,10 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [FIXED]
+
+    - updated Makefile.PL logic to support PERL_NO_HIGHLANDER
+
 1.4408    2013-09-23 11:06:35 America/New_York
 
     [FIXED]
