@@ -1,27 +1,14 @@
+use 5.008001;
 use strict;
 package Parse::CPAN::Meta;
 # ABSTRACT: Parse META.yml and META.json CPAN metadata files
 # VERSION
 
+use Exporter;
 use Carp 'croak';
 
-# UTF Support?
-sub HAVE_UTF8 () { $] >= 5.007003 }
-sub IO_LAYER () { $] >= 5.008001 ? ":utf8" : "" }  
-
-BEGIN {
-	if ( HAVE_UTF8 ) {
-		# The string eval helps hide this from Test::MinimumVersion
-		eval "require utf8;";
-		die "Failed to load UTF-8 support" if $@;
-	}
-
-	# Class structure
-	require 5.004;
-	require Exporter;
-	@Parse::CPAN::Meta::ISA       = qw{ Exporter      };
-	@Parse::CPAN::Meta::EXPORT_OK = qw{ Load LoadFile };
-}
+our @ISA = qw/Exporter/;
+our @EXPORT_OK = qw/Load LoadFile/;
 
 sub load_file {
   my ($class, $filename) = @_;
@@ -85,7 +72,7 @@ sub json_backend {
 }
 
 sub _slurp {
-  open my $fh, "<" . IO_LAYER, "$_[0]"
+  open my $fh, "<:utf8", "$_[0]" ## no critic
     or die "can't open $_[0] for reading: $!";
   return do { local $/; <$fh> };
 }
@@ -128,7 +115,7 @@ __END__
 
 =pod
 
-=for Pod::Coverage HAVE_UTF8 IO_LAYER
+=for Pod::Coverage
 
 =head1 SYNOPSIS
 
@@ -181,8 +168,8 @@ converted string data, it must first be decoded from UTF-8.
   my $metadata_structure = Parse::CPAN::Meta->load_file('META.yml');
 
 This method will read the named file and deserialize it to a data structure,
-determining whether it should be JSON or YAML based on the filename.  On
-Perl 5.8.1 or later, the file will be read using the ":utf8" IO layer.
+determining whether it should be JSON or YAML based on the filename.
+The file will be read using the ":utf8" IO layer.
 
 =head2 load_yaml_string
 
