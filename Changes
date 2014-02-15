@@ -2,6 +2,16 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [INCOMPATIBLE CHANGES]
+
+    - Dropped support for Perl's before v5.8.1 to ensure proper
+      UTF-8 and IO layer support
+
+    [CHANGED]
+
+    - Updated CPAN::Meta::YAML prereq to 0.011 due to deprecation
+      of 'errstr' and consistent use of exceptions
+
 1.4409    2013-09-23 13:17:18 America/New_York
 
     [FIXED]
