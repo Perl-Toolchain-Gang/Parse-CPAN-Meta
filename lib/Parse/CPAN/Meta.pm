@@ -28,22 +28,21 @@ sub load_yaml_string {
   my ($class, $string) = @_;
   my $backend = $class->yaml_backend();
   my $data = eval { no strict 'refs'; &{"$backend\::Load"}($string) };
-  if ( $@ ) { 
-    croak $backend->can('errstr') ? $backend->errstr : $@
-  }
+  croak $@ if $@;
   return $data || {}; # in case document was valid but empty
 }
 
 sub load_json_string {
   my ($class, $string) = @_;
-  return $class->json_backend()->new->decode($string);
+  my $data = eval { $class->json_backend()->new->decode($string) };
+  croak $@ if $@;
+  return $data || {};
 }
 
 sub yaml_backend {
-  local $Module::Load::Conditional::CHECK_INC_HASH = 1;
   if (! defined $ENV{PERL_YAML_BACKEND} ) {
-    _can_load( 'CPAN::Meta::YAML', 0.002 )
-      or croak "CPAN::Meta::YAML 0.002 is not available\n";
+    _can_load( 'CPAN::Meta::YAML', 0.011 )
+      or croak "CPAN::Meta::YAML 0.011 is not available\n";
     return "CPAN::Meta::YAML";
   }
   else {
@@ -57,7 +56,6 @@ sub yaml_backend {
 }
 
 sub json_backend {
-  local $Module::Load::Conditional::CHECK_INC_HASH = 1;
   if (! $ENV{PERL_JSON_BACKEND} or $ENV{PERL_JSON_BACKEND} eq 'JSON::PP') {
     _can_load( 'JSON::PP' => 2.27103 )
       or croak "JSON::PP 2.27103 is not available\n";
@@ -96,16 +94,16 @@ sub _can_load {
 # Create an object from a file
 sub LoadFile ($) {
   require CPAN::Meta::YAML;
-  my $object = CPAN::Meta::YAML::LoadFile(shift)
-    or die CPAN::Meta::YAML->errstr;
+  my $object = eval { CPAN::Meta::YAML::LoadFile(shift) };
+  croak $@ if $@;
   return $object;
 }
 
 # Parse a document from a string.
 sub Load ($) {
   require CPAN::Meta::YAML;
-  my $object = CPAN::Meta::YAML::Load(shift)
-    or die CPAN::Meta::YAML->errstr;
+  my $object = eval { CPAN::Meta::YAML::Load(shift) };
+  croak $@ if $@;
   return $object;
 }
 
@@ -206,8 +204,8 @@ the L<JSON> module.  See L</ENVIRONMENT> for details.
 
 =head1 FUNCTIONS
 
-For maintenance clarity, no functions are exported.  These functions are
-available for backwards compatibility only and are best avoided in favor of
+For maintenance clarity, no functions are exported by default.  These functions
+are available for backwards compatibility only and are best avoided in favor of
 C<load_file>.
 
 =head2 Load
