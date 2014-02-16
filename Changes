@@ -2,6 +2,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+1.4410    2014-02-16 00:47:48-05:00 America/New_York
+
     [INCOMPATIBLE CHANGES]
 
     - Dropped support for Perl's before v5.8.1 to ensure proper
