@@ -5,22 +5,13 @@ delete $ENV{PERL_JSON_BACKEND};
 
 # Testing of a known-bad file from an editor
 
-BEGIN {
-	if( $ENV{PERL_CORE} ) {
-		chdir 't';
-		@INC = ('../lib', 'lib');
-	}
-	else {
-		unshift @INC, 't/lib/';
-	}
-}
-
 use strict;
 BEGIN {
 	$|  = 1;
 	$^W = 1;
 }
 
+use lib 't/lib';
 use File::Spec::Functions ':ALL';
 use Parse::CPAN::Meta;
 use Parse::CPAN::Meta::Test;
