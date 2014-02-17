@@ -78,6 +78,14 @@ my $meta_yaml = catfile( test_data_directory(), 'META-VR.yml' );
   is_deeply($from_yaml, $want, "load from YAML str results in expected data");
 }
 
+{
+  local $ENV{PERL_YAML_BACKEND}; # ensure we get CPAN::META::YAML
+
+  my @yaml   = Parse::CPAN::Meta::LoadFile( 't/data/BadMETA.yml' );
+  is($yaml[0]{author}[0], 'Olivier Mengu\xE9', "Bad UTF-8 is replaced");
+}
+
+
 SKIP: {
   skip "YAML module not installed", 2
     unless eval "require YAML; 1";
