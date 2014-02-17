@@ -2,6 +2,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+1.4412    2014-02-17 07:14:43-05:00 America/New_York
+
     [FIXED]
 
     - Added prerequisite on Encode 2.11 (Paul Howarth)
