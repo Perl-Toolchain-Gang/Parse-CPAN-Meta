@@ -2,6 +2,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+1.4413    2014-02-17 20:04:23-05:00 America/New_York
+
     [FIXED]
 
     - UTF-8 decoding is done differently to avoid requiring
