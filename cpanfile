@@ -1,10 +1,9 @@
 requires "CPAN::Meta::YAML" => "0.011";
 requires "Carp" => "0";
-requires "Encode" => "2.11";
+requires "Encode" => "0";
 requires "Exporter" => "0";
 requires "File::Spec" => "0.80";
 requires "JSON::PP" => "2.27200";
-requires "PerlIO::encoding" => "0";
 requires "perl" => "5.008001";
 requires "strict" => "0";
 

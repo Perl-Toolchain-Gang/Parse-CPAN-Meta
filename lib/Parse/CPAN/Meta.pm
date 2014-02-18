@@ -71,11 +71,11 @@ sub json_backend {
 
 sub _slurp {
   require Encode;
-  require PerlIO::encoding;
-  local $PerlIO::encoding::fallback = Encode::PERLQQ()|Encode::STOP_AT_PARTIAL();
-  open my $fh, "<:encoding(UTF-8)", "$_[0]" ## no critic
+  open my $fh, "<:raw", "$_[0]" ## no critic
     or die "can't open $_[0] for reading: $!";
-  return do { local $/; <$fh> };
+  my $content = do { local $/; <$fh> };
+  $content = Encode::decode('UTF-8', $content, Encode::PERLQQ());
+  return $content;
 }
   
 sub _can_load {
