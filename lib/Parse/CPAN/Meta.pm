@@ -13,15 +13,23 @@ our @EXPORT_OK = qw/Load LoadFile/;
 sub load_file {
   my ($class, $filename) = @_;
 
+  my $meta = _slurp($filename);
+
   if ($filename =~ /\.ya?ml$/) {
-    return $class->load_yaml_string(_slurp($filename));
+    return $class->load_yaml_string($meta);
   }
-
-  if ($filename =~ /\.json$/) {
-    return $class->load_json_string(_slurp($filename));
+  elsif ($filename =~ /\.json$/) {
+    return $class->load_json_string($meta);
   }
-
-  croak("file type cannot be determined by filename");
+  elsif ( $meta =~ /^---/ ) { # looks like YAML
+    return $class->load_yaml_string($meta);
+  }
+  elsif ( $meta =~ /^\s*\{/ ) { # looks like JSON
+    return $class->load_json_string($meta);
+  }
+  else { # maybe doc-marker-free YAML
+    return $class->load_yaml_string($meta);
+  }
 }
 
 sub load_yaml_string {

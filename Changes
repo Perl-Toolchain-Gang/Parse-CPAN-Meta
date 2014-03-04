@@ -2,6 +2,11 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [CHANGED]
+
+    - load_file will now attempt to detect YAML/JSON content if the suffix
+      is not .json, .yml or .yaml
+
 1.4413    2014-02-17 20:04:23-05:00 America/New_York
 
     [FIXED]
