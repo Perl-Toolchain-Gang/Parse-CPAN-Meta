@@ -2,6 +2,10 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [ADDED]
+
+    - Added load_string, which uses heuristics to guess YAML/JSON content
+
     [CHANGED]
 
     - load_file will now attempt to detect YAML/JSON content if the suffix
