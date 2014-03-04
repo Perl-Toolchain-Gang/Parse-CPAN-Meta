@@ -2,6 +2,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+1.4414    2014-03-04 15:22:00-05:00 America/New_York
+
     [ADDED]
 
     - Added load_string, which uses heuristics to guess YAML/JSON content
