@@ -93,8 +93,8 @@ sub json_backend {
     return $backend;
   }
   if (! $ENV{PERL_JSON_BACKEND} or $ENV{PERL_JSON_BACKEND} eq 'JSON::PP') {
-    _can_load( 'JSON::PP' => 2.27103 )
-      or croak "JSON::PP 2.27103 is not available\n";
+    _can_load( 'JSON::PP' => 2.27300 )
+      or croak "JSON::PP 2.27300 is not available\n";
     return 'JSON::PP';
   }
   else {

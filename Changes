@@ -2,6 +2,11 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [PREREQS]
+
+    - Bumps JSON::PP prerequisite to 2.27300 to work around a bug before
+      perl 5.8.7.  Includes a test to confirm correct behavior.
+
 1.4419    2016-04-30 15:32:12+00:00 UTC (TRIAL RELEASE)
 
     - Re-encode strings before decode_json since that expects bytes

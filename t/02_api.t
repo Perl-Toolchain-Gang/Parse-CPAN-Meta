@@ -57,6 +57,7 @@ my $yaml_meta = catfile( test_data_directory(), 'yaml.meta' );
 my $json_meta = catfile( test_data_directory(), 'json.meta' );
 my $bare_yaml_meta = catfile( test_data_directory(), 'bareyaml.meta' );
 my $bad_yaml_meta = catfile( test_data_directory(), 'BadMETA.yml' );
+my $CL018_yaml_meta = catfile( test_data_directory(), 'CL018_yaml.meta' );
 
 ### YAML tests
 {
@@ -83,6 +84,15 @@ my $bad_yaml_meta = catfile( test_data_directory(), 'BadMETA.yml' );
   is(Parse::CPAN::Meta->yaml_backend(), 'CPAN::Meta::YAML', 'yaml_backend(): CPAN::Meta::YAML');
   my $from_yaml = Parse::CPAN::Meta->load_file( $bare_yaml_meta );
   is_deeply($from_yaml, $want, "load from bare YAML .meta file results in expected data");
+}
+
+{
+  local $ENV{PERL_YAML_BACKEND}; # ensure we get CPAN::META::YAML
+
+  note '';
+  is(Parse::CPAN::Meta->yaml_backend(), 'CPAN::Meta::YAML', 'yaml_backend(): CPAN::Meta::YAML');
+  my $from_yaml = Parse::CPAN::Meta->load_file( $CL018_yaml_meta );
+  like($from_yaml->{x_contributors}[5], qr/Olivier Mengu/, "Open question: what to expect from double encoded UTF-8");
 }
 
 {
