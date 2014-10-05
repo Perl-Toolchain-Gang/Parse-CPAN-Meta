@@ -17,6 +17,7 @@ use Parse::CPAN::Meta;
 use Parse::CPAN::Meta::Test;
 # use Test::More skip_all => 'Temporarily ignoring failing test';
 use Test::More 'no_plan';
+use utf8;
 
 #####################################################################
 # Testing that Perl::Smith config files work
@@ -47,6 +48,9 @@ my $want = {
      "repository" => "git://git.codesimply.com/Version-Requirements.git"
   },
   "version" => "0.101010",
+  "x_contributors" => [
+    "Dagfinn Ilmari Mannsåker <ilmari\@ilmari.org>",
+  ],
 };
 
 my $meta_json = catfile( test_data_directory(), 'META-VR.json' );
