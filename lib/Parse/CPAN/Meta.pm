@@ -2,7 +2,8 @@ use 5.008001;
 use strict;
 package Parse::CPAN::Meta;
 # ABSTRACT: Parse META.yml and META.json CPAN metadata files
-# VERSION
+
+our $VERSION = '1.4415';
 
 use Exporter;
 use Carp 'croak';
@@ -110,12 +111,12 @@ sub _can_load {
 
 # Kept for backwards compatibility only
 # Create an object from a file
-sub LoadFile ($) {
+sub LoadFile ($) { ## no critic
   return Load(_slurp(shift));
 }
 
 # Parse a document from a string.
-sub Load ($) {
+sub Load ($) { ## no critic
   require CPAN::Meta::YAML;
   my $object = eval { CPAN::Meta::YAML::Load(shift) };
   croak $@ if $@;
