@@ -2,6 +2,16 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [TESTS]
+
+    - Outputs the version of backends used
+
+    [META]
+
+    - Updated repo metadata and boilerplate files
+
+    - Pointed issue tracker to the Perl-Toolchain-Gang Github repo
+
 1.4414    2014-03-04 15:22:00-05:00 America/New_York
 
     [ADDED]
