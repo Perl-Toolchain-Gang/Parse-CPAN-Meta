@@ -54,6 +54,7 @@ my $meta_yaml = catfile( test_data_directory(), 'META-VR.yml' );
 my $yaml_meta = catfile( test_data_directory(), 'yaml.meta' );
 my $json_meta = catfile( test_data_directory(), 'json.meta' );
 my $bare_yaml_meta = catfile( test_data_directory(), 'bareyaml.meta' );
+my $bad_yaml_meta = catfile( test_data_directory(), 'BadMETA.yml' );
 
 ### YAML tests
 {
@@ -97,7 +98,7 @@ my $bare_yaml_meta = catfile( test_data_directory(), 'bareyaml.meta' );
 
   note '';
   is(Parse::CPAN::Meta->yaml_backend(), 'CPAN::Meta::YAML', 'yaml_backend(): CPAN::Meta::YAML');
-  my @yaml   = Parse::CPAN::Meta::LoadFile( 't/data/BadMETA.yml' );
+  my @yaml   = Parse::CPAN::Meta::LoadFile( $bad_yaml_meta );
   is($yaml[0]{author}[0], 'Olivier Mengu\xE9', "Bad UTF-8 is replaced");
 }
 

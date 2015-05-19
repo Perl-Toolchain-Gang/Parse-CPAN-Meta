@@ -2,6 +2,10 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [FIXED]
+
+    - Minimum Perl was inadvertently set to v5.10.0.  Now back to v5.8.1.
+
 1.4415    2015-04-28 11:29:52-04:00 America/New_York (TRIAL RELEASE)
 
     [TESTS]
