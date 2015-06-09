@@ -2,6 +2,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    - No changes from 1.4416
+
 1.4416    2015-05-19 11:11:47-04:00 America/New_York (TRIAL RELEASE)
 
     [FIXED]
