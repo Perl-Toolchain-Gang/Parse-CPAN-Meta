@@ -50,7 +50,7 @@ sub load_yaml_string {
 
 sub load_json_string {
   my ($class, $string) = @_;
-  my $data = eval { $class->json_backend()->new->decode($string) };
+  my $data = eval { $class->json_backend()->can('decode_json')->($string) };
   croak $@ if $@;
   return $data || {};
 }
@@ -72,6 +72,13 @@ sub yaml_backend {
 }
 
 sub json_backend {
+  if (my $backend = $ENV{CPAN_META_JSON_BACKEND}) {
+    _can_load( $backend )
+      or croak "Could not load CPAN_META_JSON_BACKEND '$backend'\n";
+    $backend->can('decode_json')
+      or croak "No decode_json sub provided by CPAN_META_JSON_BACKEND '$backend'\n";
+    return $backend;
+  }
   if (! $ENV{PERL_JSON_BACKEND} or $ENV{PERL_JSON_BACKEND} eq 'JSON::PP') {
     _can_load( 'JSON::PP' => 2.27103 )
       or croak "JSON::PP 2.27103 is not available\n";
@@ -220,8 +227,9 @@ for details.
 
   my $backend = Parse::CPAN::Meta->json_backend;
 
-Returns the module name of the JSON serializer.  This will either
-be L<JSON::PP> or L<JSON>.  Even if C<PERL_JSON_BACKEND> is set,
+Returns the module name of the JSON serializer.  If C<CPAN_META_JSON_BACKEND>
+is set, this will be whatever that's set to.  If not, this will either
+be L<JSON::PP> or L<JSON>.  If C<PERL_JSON_BACKEND> is set,
 this will return L<JSON> as further delegation is handled by
 the L<JSON> module.  See L</ENVIRONMENT> for details.
 
@@ -246,9 +254,20 @@ Reads the YAML stream from a file instead of a string.
 
 =head1 ENVIRONMENT
 
+=head2 CPAN_META_JSON_BACKEND
+
+By default, L<JSON::PP> will be used for deserializing JSON data.  If the
+C<CPAN_META_JSON_BACKEND> environment variable exists, this is expected to
+be the name of a loadable module that provides a C<decode_json> subroutine,
+which will then be used for deserialization.  Relying only on the existence
+of said subroutine allows for maximum compatibility, since this API is
+provided by L<JSON::PP>, L<JSON::XS>, L<Cpanel::JSON::XS>, L<JSON::MaybeXS>,
+L<JSON::Tiny>, L<Mojo::JSON> and if you're feeling particularly insane also
+L<JSON::Diffable> (but please don't).
+
 =head2 PERL_JSON_BACKEND
 
-By default, L<JSON::PP> will be used for deserializing JSON data. If the
+If the C<CPAN_META_JSON_BACKEND> environment variable does not exist, and if
 C<PERL_JSON_BACKEND> environment variable exists, is true and is not
 "JSON::PP", then the L<JSON> module (version 2.5 or greater) will be loaded and
 used to interpret C<PERL_JSON_BACKEND>.  If L<JSON> is not installed or is too

@@ -2,6 +2,7 @@
 
 delete $ENV{PERL_YAML_BACKEND};
 delete $ENV{PERL_JSON_BACKEND};
+delete $ENV{CPAN_META_JSON_BACKEND};
 
 # Testing of a known-bad file from an editor
 
@@ -167,6 +168,20 @@ SKIP: {
   my $json   = load_ok( 'META-VR.json', $meta_json, 100);
   my $from_json = Parse::CPAN::Meta->load_json_string( $json );
   is_deeply($from_json, $want, "load_json_string with PERL_JSON_BACKEND = 'JSON::PP'");
+}
+
+{
+  # JSON tests with fake backend
+  { package MyJSONThingy; $INC{'MyJSONThingy.pm'} = __FILE__; require JSON::PP;
+    sub decode_json { JSON::PP::decode_json(@_) } }
+
+  local $ENV{CPAN_META_JSON_BACKEND} = 'MyJSONThingy'; # request fake backend
+
+  note '';
+  is(Parse::CPAN::Meta->json_backend(), 'MyJSONThingy', 'json_backend(): MyJSONThingy');
+  my $json   = load_ok( 'META-VR.json', $meta_json, 100);
+  my $from_json = Parse::CPAN::Meta->load_json_string( $json );
+  is_deeply($from_json, $want, "load_json_string with PERL_JSON_BACKEND = 'MyJSONThingy'");
 }
 
 SKIP: {
