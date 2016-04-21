@@ -3,6 +3,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 {{$NEXT}}
 
     - Add CPAN_META_JSON_BACKEND to allow requesting non-JSON.pm backends
+    - Add CPAN_META_JSON_DECODER to allow Mojo::JSON/JSON::Tiny to be used
+      just for decoding.
 
 1.4417    2015-06-09 16:19:41-06:00 America/Denver
 
