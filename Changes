@@ -2,6 +2,8 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    - Re-encode strings before decode_json since that expects bytes
+
 1.4418    2016-04-24 13:15:53+00:00 UTC (TRIAL RELEASE)
 
     - Add CPAN_META_JSON_BACKEND to allow requesting non-JSON.pm backends

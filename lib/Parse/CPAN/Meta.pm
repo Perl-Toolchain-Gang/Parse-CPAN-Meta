@@ -50,7 +50,9 @@ sub load_yaml_string {
 
 sub load_json_string {
   my ($class, $string) = @_;
-  my $data = eval { $class->json_decoder()->can('decode_json')->($string) };
+  # load_json_string takes characters, decode_json expects bytes
+  my $encoded = Encode::encode('UTF-8', $string, Encode::PERLQQ());
+  my $data = eval { $class->json_decoder()->can('decode_json')->($encoded) };
   croak $@ if $@;
   return $data || {};
 }
