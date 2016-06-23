@@ -31,6 +31,7 @@ my %WriteMakefileArgs = (
     "JSON::PP" => "2.27300",
     "Test::More" => "0.47",
     "lib" => 0,
+    "utf8" => 0,
     "vars" => 0,
     "warnings" => 0
   },
@@ -53,6 +54,7 @@ my %FallbackPrereqs = (
   "Test::More" => "0.47",
   "lib" => 0,
   "strict" => 0,
+  "utf8" => 0,
   "vars" => 0,
   "warnings" => 0
 );
