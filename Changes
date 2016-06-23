@@ -2,6 +2,10 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [TESTS]
+
+    - Adds tests cases for wide characters in META files.
+
     [PREREQS]
 
     - Bumps JSON::PP prerequisite to 2.27300 to work around a bug before
