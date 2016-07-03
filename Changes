@@ -2,6 +2,10 @@ Changes for Perl programming language extension Parse-CPAN-Meta
 
 {{$NEXT}}
 
+    [Fixed]
+
+    - Fixed use of Encode in load_json_string.
+
 1.4421    2016-06-28 16:59:09-04:00 America/New_York
 
     - No changes from 1.4420
